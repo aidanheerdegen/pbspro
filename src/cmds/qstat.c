@@ -384,10 +384,13 @@ prt_attr(char *name, char *resource, char *value, int one_line) {
 	int len = 0;
 	int start = 0;
 	char *comma = ",";
+	char nullvalue[5]; 
 	char *key = NULL;
 	char *val = NULL;
 	char *buf = NULL;
 	char *temp = NULL;
+
+	strncpy(nullvalue,"NULL\0",5);
 
 	if (value == NULL)
 		return;
@@ -417,6 +420,9 @@ prt_attr(char *name, char *resource, char *value, int one_line) {
 					*buf++ = *value++;
 				}
 				*buf = '\0';
+				if (strlen(val) == 0) {
+				    val = nullvalue;
+				}
 				if (add_json_node(JSON_VALUE, JSON_NULL, JSON_FULLESCAPE, key, val) == NULL)
 					exit_qstat("out of memory");
 				if (*value != '\0')
