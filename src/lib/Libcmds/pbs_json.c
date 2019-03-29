@@ -165,7 +165,13 @@ strdup_escape(JsonEscapeType esc_type, const char *str)
 				str++;
 				break;
 			default:
-				buf[i++] = *str++;
+				if ( iscntrl(*str) ) {
+					// Replace control characters with question mark
+					buf[i++] = '?';
+					str++;
+				} else {
+					buf[i++] = toascii(*str++);
+				}
 			}
 			if (i >= len - 2) {
 				len *= BUFFER_GROWTH_RATE;
